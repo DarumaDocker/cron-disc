@@ -34,7 +34,7 @@ async fn handler(body: Vec<u8>) {
     // For this example, we'll use the first category if available
     let category_id = categories
         .iter()
-        .filter_map(|c| match c.name == "General" {
+        .filter_map(|c| match c.name == category {
             true => Some(c),
             false => None,
         })
