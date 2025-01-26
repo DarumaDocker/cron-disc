@@ -4,7 +4,7 @@ use schedule_flows::{schedule_cron_job, schedule_handler};
 #[tokio::main(flavor = "current_thread")]
 pub async fn on_deploy() {
     schedule_cron_job(
-        String::from("*/2 * * * *"),
+        String::from("0 * * * *"),
         String::from("New discussion created"),
     )
     .await;
