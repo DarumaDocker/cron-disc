@@ -3,27 +3,27 @@ use serde::{Deserialize, Serialize};
 
 // Structure for discussion categories
 #[derive(Debug, Deserialize)]
-struct CategoryResponse {
-    data: Option<CategoryData>,
-    errors: Option<Vec<GraphQLError>>,
+pub struct CategoryResponse {
+    pub data: Option<CategoryData>,
+    pub errors: Option<Vec<GraphQLError>>,
 }
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct CategoryData {
-    repository: CategoryRepository,
+pub struct CategoryData {
+    pub repository: CategoryRepository,
 }
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct CategoryRepository {
-    discussion_categories: CategoryConnection,
+pub struct CategoryRepository {
+    pub discussion_categories: CategoryConnection,
 }
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct CategoryConnection {
-    nodes: Vec<Category>,
+pub struct CategoryConnection {
+    pub nodes: Vec<Category>,
 }
 
 #[derive(Debug, Deserialize)]
@@ -36,91 +36,93 @@ pub struct Category {
     pub emoji_html: Option<String>,
 }
 
-// Structure for getting repository ID
 #[derive(Debug, Serialize)]
-struct RepositoryIdQuery {
-    query: String,
-    variables: RepositoryVariables,
+pub struct RepositoryIdQuery {
+    pub query: String,
+    pub variables: RepositoryVariables,
 }
 
 #[derive(Debug, Serialize)]
-struct RepositoryVariables {
-    owner: String,
-    name: String,
+pub struct RepositoryVariables {
+    pub owner: String,
+    pub name: String,
 }
 
 #[derive(Debug, Deserialize)]
-struct RepositoryResponse {
-    data: Option<RepositoryData>,
-    errors: Option<Vec<GraphQLError>>,
+pub struct RepositoryResponse {
+    pub data: Option<RepositoryData>,
+    pub errors: Option<Vec<GraphQLError>>,
 }
 
 #[derive(Debug, Deserialize)]
-struct RepositoryData {
-    repository: Repository,
+pub struct RepositoryData {
+    pub repository: Repository,
 }
 
 #[derive(Debug, Deserialize)]
-struct Repository {
-    id: String,
-}
-
-// Structures for creating discussion
-#[derive(Debug, Serialize)]
-struct DiscussionInput {
-    query: String,
-    variables: DiscussionVariables,
+pub struct Repository {
+    pub id: String,
 }
 
 #[derive(Debug, Serialize)]
-struct DiscussionVariables {
-    input: CreateDiscussionInput,
+pub struct DiscussionInput {
+    pub query: String,
+    pub variables: DiscussionVariables,
 }
 
 #[derive(Debug, Serialize)]
-struct CreateDiscussionInput {
+pub struct DiscussionVariables {
+    pub input: CreateDiscussionInput,
+}
+
+#[derive(Debug, Serialize)]
+pub struct CreateDiscussionInput {
     #[serde(rename = "repositoryId")]
-    repository_id: String,
+    pub repository_id: String,
     #[serde(rename = "categoryId")]
-    category_id: String,
-    title: String,
-    body: String,
+    pub category_id: String,
+    pub title: String,
+    pub body: String,
 }
 
 #[derive(Debug, Deserialize)]
-struct DiscussionResponse {
-    data: Option<CreateDiscussionPayload>,
-    errors: Option<Vec<GraphQLError>>,
+pub struct DiscussionResponse {
+    pub data: Option<CreateDiscussionPayload>,
+    pub errors: Option<Vec<GraphQLError>>,
 }
 
 #[derive(Debug, Deserialize)]
 #[serde(rename_all = "camelCase")]
-struct CreateDiscussionPayload {
-    discussion: Option<Discussion>,
+pub struct CreateDiscussionPayload {
+    pub discussion: Option<Discussion>,
 }
 
 #[derive(Debug, Deserialize)]
-struct Discussion {
-    id: String,
-    url: String,
-    number: i32,
+pub struct Discussion {
+    pub id: String,
+    pub url: String,
+    pub number: i32,
 }
 
 #[derive(Debug, Deserialize)]
-struct GraphQLError {
-    message: String,
-    locations: Option<Vec<ErrorLocation>>,
-    path: Option<Vec<String>>,
+pub struct GraphQLError {
+    pub message: String,
+    pub locations: Option<Vec<ErrorLocation>>,
+    pub path: Option<Vec<String>>,
 }
 
 #[derive(Debug, Deserialize)]
-struct ErrorLocation {
-    line: i32,
-    column: i32,
+pub struct ErrorLocation {
+    pub line: i32,
+    pub column: i32,
 }
 
 // Function to get discussion categories
-async fn get_discussion_categories(token: &str, owner: &str, repo: &str) -> Result<Vec<Category>> {
+pub async fn get_discussion_categories(
+    token: &str,
+    owner: &str,
+    repo: &str,
+) -> Result<Vec<Category>> {
     let client = reqwest::Client::new();
 
     let query = r#"
@@ -219,7 +221,7 @@ pub async fn get_repository_id(token: &str, owner: &str, name: &str) -> Result<S
 }
 
 // Function to create a new discussion
-async fn create_discussion(
+pub async fn create_discussion(
     token: &str,
     repository_id: &str,
     category_id: &str,

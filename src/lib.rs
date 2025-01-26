@@ -24,10 +24,12 @@ async fn handler(body: Vec<u8>) {
     let category = std::env::var("DISCUSSION_CATEGORY")
         .expect("DISCUSSION_CATEGORY environment variable is required");
 
-    let repository_id = get_repository_id(&token, owner, repo).await?;
+    let repository_id = get_repository_id(&token, &owner, &repo).await.unwrap();
 
     // Get available discussion categories
-    let categories = get_discussion_categories(&token, owner, repo).await?;
+    let categories = get_discussion_categories(&token, &owner, &repo)
+        .await
+        .unwrap();
 
     // For this example, we'll use the first category if available
     let category_id = categories
@@ -37,7 +39,8 @@ async fn handler(body: Vec<u8>) {
             false => None,
         })
         .next()
-        .ok_or_else(|| anyhow::anyhow!("No discussion categories available"))?
+        .ok_or_else(|| anyhow::anyhow!("No discussion categories available"))
+        .unwrap()
         .id
         .clone();
 
@@ -58,6 +61,4 @@ async fn handler(body: Vec<u8>) {
             eprintln!("Error creating discussion: {}", e);
         }
     }
-
-    Ok(())
 }
